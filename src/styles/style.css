@@ -1,7 +1,7 @@
 /* Amirhossein (Armin) Panahi */
 /* Week 1 - Strategic Supermarket */
 
-/* ========== Font (Vazirmatn, SIL OFL) ========== */
+/* ========== Font (Vazirmatn) ========== */
 @font-face {
   font-family: "Vazirmatn";
   src: url("../../assets/fonts/Vazirmatn-Variable.woff2") format("woff2");
@@ -60,16 +60,11 @@
 
 html { -webkit-text-size-adjust: 100%; }
 
-/* Offset for in-page jumps under the sticky header. It is set on the targets instead of
-   `scroll-padding-top` on html: that made the browser scroll the page whenever a control
-   inside the sticky header (search, cart, burger) received focus. */
 :is(main, .shelf, #categories, #contact) {
   scroll-margin-top: calc(var(--header-h) + .75rem);
 }
 
-/* Cards live inside a clipping scroller (.rail), so their own scroll-margin is capped by
-   the rail's padding; the html-level padding is only needed while a card is the target. */
-html:has(.card:target) { scroll-padding-top: calc(var(--header-h) + .75rem); }
+html:has(.card:target, .offers :target) { scroll-padding-top: calc(var(--header-h) + .75rem); }
 
 @media (prefers-reduced-motion: no-preference) {
     html, .rail {scroll-behavior: smooth;}
@@ -131,6 +126,26 @@ button { font: inherit; color: inherit; cursor: pointer; }
 
 .btn--green { background: var(--brand); color: #fff; }
 
+
+
+/* ========== Icons (inline SVG sprite, colored via currentColor) ========== */
+.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+.icon {
+  flex: none;
+  width: 1.25em;
+  height: 1.25em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vertical-align: -.25em;
+}
+
+.icon--mirror:dir(rtl) { transform: scaleX(-1); }
+
+.icon--cat { color: var(--brand); }
 
 
 /* ========== Header ========== */
@@ -219,8 +234,11 @@ button { font: inherit; color: inherit; cursor: pointer; }
     inset-inline-start: 1rem;
     display: grid;
     place-items: center;
+    color: var(--muted);
     pointer-events: none;
 }
+
+.search-ico .icon { width: 1.25rem; height: 1.25rem; }
 
 .search input {
   width: 100%;
@@ -247,6 +265,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
   color: var(--brand-ink);
   font-weight: 700;
 }
+.cart .icon { width: 1.375rem; height: 1.375rem; }
+
 .cart-txt { display: none; }
 
 .cart b {
@@ -311,7 +331,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
     transform: translateY(-6px) rotate(-45deg);
 }
 
-/* Starts exactly under the header, wherever the header is (banner height / scroll position) */
+/* banner height / scroll position */
 .scrim {
   position: absolute;
   inset-inline: 0;
@@ -426,8 +446,8 @@ main > * + * { margin-top: 2rem; }
     position: absolute;
     inset-inline-end: 1rem;
     bottom: .25rem;
-    font-size: 4.5rem;
-    line-height: 1;
+    width: clamp(5rem, 20vw, 10rem);
+    height: auto;
 }
 
 .hero-side {
@@ -445,8 +465,8 @@ main > * + * { margin-top: 2rem; }
 .hero-side .art {
     align-self: center;
     margin-block: .5rem;
-    font-size: 3.5rem;
-    line-height: 1.2;
+    width: clamp(4.5rem, 16vw, 7rem);
+    height: auto;
 }
 
 .hero-side .btn { margin-top: auto; }
@@ -462,11 +482,16 @@ main > * + * { margin-top: 2rem; }
 .sec-head h2 { margin-inline-end: auto; font-size: 1.25rem; line-height: 1.5; }
 
 .shelf:target h2::after, #categories:target h2::after {
-  content: "→ اینجا هستید";
+  content: "اینجا هستید";
   margin-inline-start: .6rem;
   padding: .1rem .7rem;
+  padding-inline-start: 1.9rem;
   border-radius: 999px;
-  background: var(--gold);
+  background-color: var(--gold);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232b2100' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0'/%3E%3Ccircle cx='12' cy='10' r='3'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right .55rem center;
+  background-size: .9rem;
   color: #2b2100;
   font-size: .75rem;
   font-weight: 700;
@@ -483,14 +508,17 @@ main > * + * { margin-top: 2rem; }
   border-radius: 50%;
   border: 1px solid var(--line);
   background: var(--surface);
-  font-size: 1.15rem;
-  font-weight: 700;
+}
+
+.arr .icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  transform: scaleX(var(--flip, 1));
 }
 
 
 
 /* ========== The Arrow Mirrors With The Page Direction ========== */
-.arr::before { content: "→" / ""; transform: scaleX(var(--flip, 1)); }
 .arr--end { --flip: -1; }
 .arr:dir(ltr) { --flip: -1; }
 .arr--end:dir(ltr) { --flip: 1; }
@@ -535,12 +563,18 @@ main > * + * { margin-top: 2rem; }
     height: 2.75rem;
     border-radius: 50%;
     background: var(--t);
-    font-size: 1.4rem;
+    color: var(--brand-ink);
 }
 
+.ico .icon { width: 1.5rem; height: 1.5rem; }
 
 
-/* Carousel: CSS-only (scroll-snap) + fragment links for start/end */
+
+.shelf:target h2:dir(ltr)::after, #categories:target h2:dir(ltr)::after {
+  background-position: left .55rem center;
+}
+
+/* Carousel */
 .rail {
   display: flex;
   gap: .75rem;
@@ -548,8 +582,6 @@ main > * + * { margin-top: 2rem; }
   overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
-  /* Extra top padding (cancelled by the negative margin) lets an arrow jump leave the
-     section title and arrows visible below the sticky header instead of hidden under it */
   margin: -2.5rem calc(var(--gutter) * -1) -.75rem;
   padding: 3.25rem var(--gutter) 1.5rem;
   scroll-padding-inline: var(--gutter);
@@ -565,13 +597,14 @@ main > * + * { margin-top: 2rem; }
   border-radius: var(--radius);
   background: var(--surface);
   scroll-snap-align: start;
-  scroll-margin-block-start: 4rem; /* limited by .rail's top padding */
+  scroll-snap-stop: always;
+  scroll-margin-block-start: 4rem;
   transition: transform .25s var(--ease);
 }
 
 
 
-/* Shadow is applied to the pseudo-element and animated only via opacity → Composite stage */
+/* Shadow / Composite stage */
 .card::after {
   content: "";
   position: absolute;
@@ -601,7 +634,14 @@ main > * + * { margin-top: 2rem; }
     aspect-ratio: 1.15;
     border-radius: .8rem;
     background: var(--t);
-    font-size: 3.25rem;
+    overflow: hidden;
+}
+
+.pic > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .badge {
@@ -659,7 +699,7 @@ main > * + * { margin-top: 2rem; }
 
 .add:disabled { background: var(--line); color: var(--muted); cursor: not-allowed; }
 
-.card--out .pic > span:first-child { opacity: .4; filter: grayscale(1); }
+.card--out .pic > img:first-child { opacity: .4; filter: grayscale(1); }
 
 .card--out .price strong { color: var(--muted); }
 
@@ -678,12 +718,269 @@ main > * + * { margin-top: 2rem; }
   font-weight: 700;
 }
 
-.banner span { font-size: 2.5rem; line-height: 1; }
+.banner img { flex: none; width: 3.5rem; height: 3.5rem; object-fit: contain; }
 
 .banners a:nth-child(1) { --t: var(--t4); }
 .banners a:nth-child(2) { --t: var(--t6); }
 
 
+
+/* ========== Offers carousel (green box: intro panel + cards + "see all") ========== */
+.offers {
+  --offers-pad: 1.5rem;
+  --offers-intro-w: 8.75rem;
+  --offer-w: 10.75rem;
+}
+
+.offers__box {
+  position: relative;
+  overflow: hidden;
+  padding-inline: .25rem;
+  border-radius: 1.5rem;
+  background: var(--brand);
+  color: #fff;
+  timeline-scope: --offers-scroll;
+}
+
+.offers__scroller {
+  display: flex;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  padding-block: var(--offers-pad);
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  scroll-timeline: --offers-scroll inline;
+}
+
+.offers__scroller::-webkit-scrollbar { display: none; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .offers__scroller { scroll-behavior: smooth; }
+}
+
+/* Intro panel (scrolls away with the cards) */
+.offers__intro {
+  flex: 0 0 var(--offers-intro-w);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-inline: .5rem;
+  text-align: center;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  scroll-margin-block-start: var(--offers-pad);
+}
+
+.offers__title {
+  font-size: 1.375rem;
+  font-weight: 800;
+  line-height: 1.5;
+}
+
+.offers__title span { display: block; }
+
+/* No "you are here" badge on this box: it would change the box height. */
+.offers:target .offers__title::after { content: none; }
+
+.offers__art {
+  width: 100%;
+  max-width: 8rem;
+  height: auto;
+}
+
+.offers__all {
+  display: inline-flex;
+  align-items: center;
+  gap: .25rem;
+  min-height: 2.75rem;
+  color: #fff;
+  font-size: .9375rem;
+  font-weight: 800;
+}
+
+.offers__all:focus-visible { outline-color: #fff; }
+
+/* Cards */
+.offers__list { display: flex; }
+
+.offer-card {
+  flex: 0 0 var(--offer-w);
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  padding: 1rem 1rem 1.25rem;
+  border-inline-start: .125rem solid var(--brand);
+  background: var(--surface);
+  color: var(--ink);
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  scroll-margin-block-start: var(--offers-pad);
+}
+
+.offer-card:first-child {
+  border-inline-start: 0;
+  border-start-start-radius: .75rem;
+  border-end-start-radius: .75rem;
+}
+
+.offer-card__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: contain;
+}
+
+.offer-card__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  align-self: flex-start;
+  padding: .25rem .75rem;
+  border-radius: 999px;
+  background: var(--brand);
+  color: #fff;
+  font-size: .75rem;
+  font-weight: 700;
+  line-height: 1.6;
+}
+
+.offer-card__prices {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: space-between;
+  align-items: center;
+  row-gap: .5rem;
+}
+
+.offer-card__discount {
+  padding: 0 .6rem;
+  border-radius: 999px;
+  background: var(--red);
+  color: #fff;
+  font-size: .875rem;
+  font-weight: 800;
+  line-height: 1.75;
+}
+
+.offer-card__price {
+  display: flex;
+  align-items: baseline;
+  gap: .25rem;
+  line-height: 1.5;
+}
+
+.offer-card__price strong { font-size: 1.0625rem; font-weight: 800; }
+
+.offer-card__price small { font-size: .6875rem; color: var(--muted); }
+
+.offer-card__old {
+  grid-column: 2;
+  justify-self: center;
+  font-size: .8125rem;
+  color: var(--muted);
+}
+
+/* "See all" card at the end of the track */
+.offer-card--all {
+  align-items: center;
+  justify-content: center;
+}
+
+.offer-all {
+  display: grid;
+  justify-items: center;
+  gap: .75rem;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.offer-all__circle {
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border: 2px solid var(--brand-ink);
+  border-radius: 50%;
+  color: var(--brand-ink);
+}
+
+.offer-all__circle .icon { width: 1.5rem; height: 1.5rem; }
+
+/* Round arrow buttons over the track edges */
+.offers__nav {
+  --flip: 1;
+  position: absolute;
+  inset-block-start: 45%;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  translate: 0 -50%;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 2px 10px rgb(0 0 0 / .25);
+}
+
+.offers__nav .icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  transform: scaleX(var(--flip));
+}
+
+.offers__nav--prev { inset-inline-start: .75rem; }
+
+.offers__nav--next { inset-inline-end: .75rem; --flip: -1; }
+
+.offers__nav:dir(ltr) { --flip: -1; }
+
+.offers__nav--next:dir(ltr) { --flip: 1; }
+
+.offers__nav:focus-visible {
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--surface);
+}
+
+/* Show only the arrow that still makes sense (needs scroll-driven animations;
+   without support both arrows simply stay visible). */
+@supports (animation-timeline: scroll()) {
+  .offers__nav {
+    animation: offers-nav linear both;
+    animation-timeline: --offers-scroll;
+  }
+
+  .offers__nav--prev { animation-range: 0 4rem; }
+
+  .offers__nav--next {
+    animation-direction: reverse;
+    animation-range: calc(100% - 4rem) 100%;
+  }
+}
+
+@keyframes offers-nav {
+  from { opacity: 0; visibility: hidden; }
+  to   { opacity: 1; visibility: visible; }
+}
+
+@media (hover: hover) {
+  .offers__nav:hover { border-color: var(--brand); }
+}
+
+@media (min-width: 40rem) {
+  .offers {
+    --offers-intro-w: 12rem;
+    --offer-w: 13.75rem;
+  }
+
+  .offers__title { font-size: 1.75rem; }
+
+  .offers__nav { width: 3rem; height: 3rem; }
+}
 
 /* ========== Footer ========== */
 .site-footer {
@@ -734,6 +1031,7 @@ main > * + * { margin-top: 2rem; }
 .foot-bar a {
   display: inline-flex;
   align-items: center;
+  gap: .35rem;
   min-height: 2.75rem;
   color: #ffd166;
   font-weight: 700;
@@ -742,7 +1040,7 @@ main > * + * { margin-top: 2rem; }
 
 
 /* ========== Responsive ========== */
-/* ========== Very Small Mobiles (up to 360px) ========== */
+/* ========== Very Small Mobiles ========== */
 @media (max-width: 22.5rem) {
   .bar { column-gap: .375rem; }
   .logo small { display: none; }
