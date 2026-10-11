@@ -8,7 +8,7 @@
 /* ==========================================================================
    1. Config
    ========================================================================== */
-const API_BASE = '../../api/';
+const API_BASE = './api/';
 const API_FILES = ['products', 'categories', 'stock', 'offers', 'shop'];
 /* home.json (hero, banners, carousel order) is optional for now: while this is false the file is not requested and the
    page uses the defaults built in defaultHome() below. Set it to true once ../../api/home.json exists. */

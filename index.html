@@ -12,13 +12,13 @@
     <meta name="theme-color" content="#0f1a14" media="(prefers-color-scheme: dark)">
     <!-- ========== ICON LINKS ========== -->
     <link rel="icon" href="./assets/icons/favicon-32.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="./assets/icons/favicon-48.png" sizes="48x48" type="image/png">
     <link rel="icon" href="./assets/icons/icon-192.png" sizes="192x192" type="image/png">
-    <link rel="icon" href="./assets/icons/favicon-96.png" sizes="96x96" type="image/png">
-    <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png" type="image/png">
+    <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png">
     <!-- ========== STYLE LINKS ========== -->
     <link rel="stylesheet" href="./src/styles/style.css">
-    <!-- ========== SCRIPT ========== -->
-    <script src="./src/scripts/app.js" defer></script>
+    <!-- ========== SCRIPT (all page content is built from the API in this file) ========== -->
+    <script src="./src/scripts/script.js" defer></script>
   </head>
   <body id="top">
     <!-- ========== SVG ICONS ========== -->
@@ -83,46 +83,19 @@
       <symbol id="i-chevron-right" viewBox="0 0 24 24">
       <path d="m9 18 6-6-6-6" />
       </symbol>
-      <symbol id="i-trash" viewBox="0 0 24 24">
-      <path d="M3 6h18" />
-      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
-      <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-      <path d="M10 11v6" />
-      <path d="M14 11v6" />
-      </symbol>
-      <symbol id="i-plus" viewBox="0 0 24 24">
-      <path d="M5 12h14" />
-      <path d="M12 5v14" />
-      </symbol>
-      <symbol id="i-minus" viewBox="0 0 24 24">
-      <path d="M5 12h14" />
-      </symbol>
-      <symbol id="i-x" viewBox="0 0 24 24">
-      <path d="M18 6 6 18" />
-      <path d="m6 6 12 12" />
-      </symbol>
-      <symbol id="i-package" viewBox="0 0 24 24">
-      <path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z" />
-      <path d="M12 22V12" />
-      <path d="m3.29 7 8.71 5 8.71-5" />
-      <path d="m7.5 4.27 9 5.15" />
-      </symbol>
-      <symbol id="i-basket" viewBox="0 0 24 24">
-      <path d="m15 11-1 9" />
-      <path d="m19 11-4-7" />
-      <path d="M2 11h20" />
-      <path d="m3.5 11 1.6 7.4a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6l1.7-7.4" />
-      <path d="m5 11 4-7" />
-      <path d="m9 11 1 9" />
-      </symbol>
       <symbol id="i-alert" viewBox="0 0 24 24">
-      <circle cx="12" cy="12" r="10" />
-      <path d="M12 8v4" />
-      <path d="M12 16h.01" />
+      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
+      <path d="M12 9v4" />
+      <path d="M12 17h.01" />
       </symbol>
       <symbol id="i-refresh" viewBox="0 0 24 24">
       <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8" />
       <path d="M21 3v5h-5" />
+      </symbol>
+      <symbol id="i-bag" viewBox="0 0 24 24">
+      <path d="M16 10a4 4 0 0 1-8 0" />
+      <path d="M3.103 6.034h17.794" />
+      <path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z" />
       </symbol>
     </svg>
 
@@ -130,19 +103,16 @@
 
     <a class="skip" href="#main">پرش به محتوای اصلی</a>
 
-    <!-- ========== NOTICE BAR (text from shop.json) ========== -->
+    <!-- ========== NOTICE BAR (filled from shop.json) ========== -->
 
-    <aside class="header-banner" aria-label="اطلاعیه">
-      <svg class="icon icon--mirror" aria-hidden="true" focusable="false"><use href="#i-truck" /></svg>
-      <span id="notice"></span>
-    </aside>
+    <section class="header-banner" id="notice" aria-label="اطلاعیه"></section>
 
     <!-- ========== HEADER ========== -->
 
     <header class="site-header">
       <div class="bar">
         <a class="logo" href="#top" aria-label="سوپرمارکت آرمین، بازگشت به بالای صفحه">
-          <!-- SVG LOGO -->
+                    <!-- SVG LOGO -->
           <svg
             width="512"
             height="512"
@@ -494,64 +464,87 @@
 
           </svg>
           <span>
-            <b>سوپرمارکت آرمین</b><small id="tagline"></small>
+            <b>سوپرمارکت آرمین</b><small>همه‌چیز برای یک خرید خوب</small>
           </span>
         </a>
 
         <div class="search" role="search">
           <label class="sr-only" for="q">جستجوی کالا</label>
           <span class="search-ico" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search" /></svg></span>
-          <input id="q" type="search" placeholder="جستجو در میان کالاها…" autocomplete="off">
+          <input
+            id="q"
+            type="search"
+            placeholder="جستجو در میان کالاها…"
+            autocomplete="off">
         </div>
 
-        <div class="cart-wrap" id="cart-wrap">
-          <button class="cart" type="button" data-cart="toggle" aria-expanded="false" aria-controls="mini-cart" aria-label="سبد خرید، خالی">
+        <button class="cart" id="cart-btn" type="button" aria-label="سبد خرید، ۰ کالا">
           <span aria-hidden="true">
             <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-cart" /></svg>
             <span class="cart-txt">سبد خرید</span>
           </span>
-          <b aria-hidden="true">۰</b>
+          <b id="cart-count" aria-hidden="true">۰</b>
         </button>
-          <!-- ========== MINI CART (built by app.js from localStorage + API data) ========== -->
-          <section class="mini-cart" id="mini-cart" aria-label="خلاصه سبد خرید"></section>
-        </div>
 
-        <input class="sr-only menu-toggle" type="checkbox" id="menu-toggle" aria-controls="primary-nav">
+        <input
+          class="sr-only menu-toggle"
+          type="checkbox"
+          id="menu-toggle"
+          aria-controls="primary-nav">
         <label class="burger" for="menu-toggle"
-          ><span class="sr-only">باز و بسته کردن منوی اصلی</span><span class="bars"></span></label>
+          ><span class="sr-only">باز و بسته کردن منوی اصلی</span
+          ><span class="bars"></span
+        ></label>
         <label class="scrim" for="menu-toggle" aria-hidden="true"></label>
 
-        <!-- ========== MAIN MENU (items from shop.json, mega menu from categories.json) ========== -->
+        <!-- ========== MAIN MENU (built from categories.json + shop.json) ========== -->
         <nav class="main-nav" id="primary-nav" aria-label="منوی اصلی">
-          <ul id="main-menu">
-            <li class="mega">
-              <a href="#categories"
-                ><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-menu" /></svg> همه دسته‌ها</a
-              >
-              <ul class="mega-panel" id="mega-list"></ul>
-            </li>
-          </ul>
+          <ul id="nav-list"></ul>
         </nav>
       </div>
     </header>
 
-    <!-- ========== MAIN (built by src/scripts/app.js) ========== -->
+    <!-- ========== MAIN (hero, categories, carousels: built from the API) ========== -->
 
-    <main id="main" class="wrap" tabindex="-1" aria-busy="true"></main>
+    <main id="main" class="wrap" tabindex="-1" aria-busy="true">
+      <noscript>
+        <p class="state state--error">برای نمایش محصولات، جاوااسکریپت مرورگر باید فعال باشد.</p>
+      </noscript>
+    </main>
 
-    <!-- ========== FOOTER (built by src/scripts/app.js) ========== -->
+    <!-- ========== FOOTER ========== -->
 
     <footer class="site-footer" id="contact">
       <div class="wrap">
-        <div class="foot-grid" id="foot-grid"></div>
+        <div class="foot-grid">
+          <div>
+            <h2>سوپرمارکت آرمین</h2>
+            <p id="foot-about"></p>
+            <address id="foot-contact"></address>
+            <h3 class="foot-social__title" id="foot-social-t">ما را دنبال کنید</h3>
+            <ul class="foot-social" id="foot-social" aria-labelledby="foot-social-t"></ul>
+          </div>
+          <nav aria-label="دسته‌ها در پاورقی">
+            <h2>دسته‌ها</h2>
+            <ul id="foot-cats"></ul>
+          </nav>
+          <div>
+            <h2>راهنما</h2>
+            <ul id="foot-help"></ul>
+          </div>
+          <div>
+            <h2>ساعت کاری</h2>
+            <ul id="foot-hours"></ul>
+          </div>
+        </div>
         <div class="foot-bar">
-          <p id="copyright"></p>
+          <p id="foot-copy"></p>
           <a href="#top"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow-up" /></svg> بازگشت به بالا</a>
         </div>
       </div>
     </footer>
 
-    <!-- screen-reader announcements (cart, status) -->
-    <div class="sr-only" id="live" role="status" aria-live="polite"></div>
+    <!-- ========== LIVE REGION (screen-reader announcements) ========== -->
+    <div class="sr-only" id="live" role="status"></div>
   </body>
 </html>
