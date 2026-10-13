@@ -19,7 +19,7 @@
 
 
 // ----- Config -----
-const API_BASE = '../../api/';
+const API_BASE = '../api/';
 const API_FILES = ['products', 'categories', 'stock', 'offers', 'shop', 'home'];
 const SLOW_AFTER_MS = 3000;
 const HARD_TIMEOUT_MS = 30000;
